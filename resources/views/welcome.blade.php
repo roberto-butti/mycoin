@@ -97,10 +97,11 @@
                 </div>
             @endif
 
-            <div class="content">
+            <div class="content"  id="app">
                 <div class="title m-b-md">
                     Laravel
                     <p class="versioninfo">Version {{ app()->version() }}</p>
+                    aa<example-component></example-component>aa
                 </div>
 
                 <div class="links">
@@ -125,5 +126,6 @@
                 </div>
             </div>
         </div>
+        <script src="{{ asset('js/app.js') }}"></script>
     </body>
 </html>
