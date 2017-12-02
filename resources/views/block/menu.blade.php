@@ -12,13 +12,14 @@
 
 <div id="navbarExampleTransparentExample" class="navbar-menu">
   <div class="navbar-start">
-    <a class="navbar-item" href="https://bulma.io/">
+    <a class="navbar-item" href="{{ route('home') }}">
       Home
     </a>
     <div class="navbar-item has-dropdown is-hoverable">
       <a class="navbar-link" href="/documentation/overview/start/">
         Docs
       </a>
+      <!--
       <div class="navbar-dropdown is-boxed">
         <a class="navbar-item" href="/documentation/overview/start/">
           Overview
@@ -43,6 +44,7 @@
           Components
         </a>
       </div>
+      -->
     </div>
   </div>
 
