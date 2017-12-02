@@ -13,7 +13,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        //$this->middleware('auth');
     }
 
     /**
@@ -25,4 +25,28 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    public function getTickers() {
+        $client = new \GuzzleHttp\Client();
+        $url = "https://api.therocktrading.com/v1/funds/tickers";
+        //$res = $client->request('GET', $url, [
+            
+        //]);
+        $request = new \GuzzleHttp\Psr7\Request('GET', $url);
+        $promise = $client->sendAsync($request)->then(function ($response) {
+            echo 'I completed! ' . $response->getBody();
+        });
+        //$promise->wait();
+        
+        //echo $res->getStatusCode();
+        
+        return $url;
+    }
+
+    public function getFunds() {
+        $url = "https://api.therocktrading.com/v1/funds";
+        return $url;
+    }
+
+
 }
