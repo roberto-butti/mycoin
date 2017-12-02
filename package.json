@@ -11,6 +11,8 @@
     },
     "devDependencies": {
         "axios": "^0.17",
+        "browser-sync": "^2.18.13",
+        "browser-sync-webpack-plugin": "^1.2.0",
         "bulma": "^0.6.1",
         "bulma-extensions": "^0.5.2",
         "cross-env": "^5.1",
