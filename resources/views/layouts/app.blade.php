@@ -14,6 +14,9 @@
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     </head>
     <body>
+    @include('block.menu')
+    @include('block.hero')
+    
         <div id="app">
             <nav class="navbar has-shadow">
                 <div class="container">
@@ -57,6 +60,7 @@
             </nav>
             @yield('content')
         </div>
+        @include('block.footer')
 
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}"></script>
