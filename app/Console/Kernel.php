@@ -26,6 +26,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        $schedule->command('mycoin:getrocktickers')->everyMinute();
+        //$schedule->command('mycoin:getrocktickers')->everyFiveMinutes();
     }
 
     /**
