@@ -10,6 +10,8 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 .env
+.env.stage
+
 /public/js/app.js
 /public/css/app.css
 /public/js/manifest.js
