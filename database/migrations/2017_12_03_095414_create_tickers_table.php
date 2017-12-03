@@ -15,7 +15,7 @@ class CreateTickersTable extends Migration
     {
         Schema::create('tickers', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('date');
+            $table->dateTimeTz('date');
             $table->string('fund_id');
             $table->double('bid');
             $table->double('ask');

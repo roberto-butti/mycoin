@@ -40,7 +40,12 @@ class HomeController extends Controller
             \Log::info($current_time.' - sendasync status code::'.$response->getStatusCode());
             $json =  $response->getBody();
             $jobj = json_decode($json, true);
-            $c = collect($jobj['tickers']);
+            foreach ($jobj['tickers'] as $key => $value) {
+                $ticker = \App\Ticker::create($value);
+                
+            }
+            
+            //$c = collect($jobj['tickers']);
         });
         $current_time = \Carbon\Carbon::now()->toDateTimeString();
         \Log::info($current_time.' - before promise URL:'.$url);
