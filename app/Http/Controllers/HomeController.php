@@ -33,13 +33,20 @@ class HomeController extends Controller
             
         //]);
         $request = new \GuzzleHttp\Psr7\Request('GET', $url);
+        $current_time = \Carbon\Carbon::now()->toDateTimeString();
+        \Log::info($current_time.' - Get URL:'.$url);
         $promise = $client->sendAsync($request)->then(function ($response) {
-            echo 'I completed! ' . $response->getBody();
+            $current_time = \Carbon\Carbon::now()->toDateTimeString();
+            \Log::info($current_time.' - sendasync status code::'.$response->getStatusCode());
+            $json =  $response->getBody();
+            $jobj = json_decode($json, true);
+            $c = collect($jobj['tickers']);
         });
-        //$promise->wait();
-        
-        //echo $res->getStatusCode();
-        
+        $current_time = \Carbon\Carbon::now()->toDateTimeString();
+        \Log::info($current_time.' - before promise URL:'.$url);
+        $promise->wait();
+        $current_time = \Carbon\Carbon::now()->toDateTimeString();
+        \Log::info($current_time.' - after promise URL:'.$url);
         return $url;
     }
 

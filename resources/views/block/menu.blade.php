@@ -16,13 +16,13 @@
       Home
     </a>
     <div class="navbar-item has-dropdown is-hoverable">
-      <a class="navbar-link" href="/documentation/overview/start/">
+      <a class="navbar-link" href="#">
         Docs
       </a>
-      <!--
+      
       <div class="navbar-dropdown is-boxed">
-        <a class="navbar-item" href="/documentation/overview/start/">
-          Overview
+        <a class="navbar-item" href="{{ route('tickers') }}">
+          Tickers (API)
         </a>
         <a class="navbar-item" href="https://bulma.io/documentation/modifiers/syntax/">
           Modifiers
