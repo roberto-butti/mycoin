@@ -41,6 +41,11 @@ class HomeController extends Controller
             $json =  $response->getBody();
             $jobj = json_decode($json, true);
             foreach ($jobj['tickers'] as $key => $value) {
+                $current_time = \Carbon\Carbon::now()->toDateTimeString();
+                \Log::info($current_time.' - date from service: '.$value['date']." - ".$value["fund_id"]);
+                $value['date'] = \Carbon\Carbon::parse($value['date'])->timezone('Europe/London');
+                \Log::info($current_time.' - date from carbon: '.$value['date']." - ".$value["date"]->getTimezone()->getName());
+                
                 $ticker = \App\Ticker::create($value);
                 
             }
