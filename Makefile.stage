@@ -1,0 +1,37 @@
+.PHONY: help
+
+SSH_ALIAS=mycoin.stage
+SSH_USER=mycoin
+WEB_DIR=/var/www/mycoin.odotalk.com/htdocs
+WEB_USER=www-data
+#DRY_RUN=--dry-run
+DRY_RUN=
+
+
+
+all: help
+help:
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+
+remotedu: ## Execute DU command in htdocs dir, just for diagnostic purpose
+	ssh ${SSH_ALIAS} "cd ${WEB_DIR}; du -h"
+
+rsynca: ## execute Rsync from current dir and remote htdocs ${WEB_DIR}
+	rsync ${DRY_RUN} -rlcgoDvzi -e "ssh" --delete . ${SSH_ALIAS}:${WEB_DIR}  --exclude-from 'exclude-list.txt'
+
+copyenvprod:
+	scp .env.stage ${SSH_ALIAS}:${WEB_DIR}/.env
+
+fixownership: ## Execute DU command in htdocs dir, just for diagnostic purpose
+	ssh -t ${SSH_ALIAS} "sudo chown -R ${WEB_USER} ${WEB_DIR}/storage/*; ls -lao ${WEB_DIR}/storage"
+
+
+
+migrate: ## Execute migrate command for DB schema
+	ssh ${SSH_ALIAS} "cd ${WEB_DIR}; php artisan migrate --env=stage"
+
+
+buildfrontend: ## execute npm task to compile frontend assets (js and css...)
+	npm run production
+
