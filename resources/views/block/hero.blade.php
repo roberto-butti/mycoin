@@ -1,11 +1,12 @@
-<section class="hero is-primary">
+<section class="hero ">
   <div class="hero-body">
     <div class="container">
       <h1 class="title">
-      {{ config('app.name', 'Laravel') }}
+      1 {{ $currency }} == {{ $lastticker->last }} &euro;
+
       </h1>
       <h2 class="subtitle">
-        Hero subtitle
+      {{ $lastticker->date }}
       </h2>
     </div>
   </div>

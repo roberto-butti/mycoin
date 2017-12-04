@@ -23,7 +23,15 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $currency = 'PPCEUR';
+        $tickers = \App\Ticker::where('fund_id', $currency)
+        ->select('date', 'last', 'fund_id')
+        ->orderBy('date', 'desc')
+        ->distinct()
+        ->take(10)
+        ->get();
+        $ticker = $tickers[0];
+        return view('home',['tickers' => $tickers, 'lastticker' => $ticker, 'currency' => $currency]);
     }
 
     public function getTickers() {
