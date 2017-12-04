@@ -11,7 +11,7 @@ npm-debug.log
 yarn-error.log
 .env
 .env.stage
-
+/*.sql
 /public/js/app.js
 /public/css/app.css
 /public/js/manifest.js
