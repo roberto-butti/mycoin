@@ -16,7 +16,7 @@ window.Vue = require('vue');
  */
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
-
+Vue.component('formcalc', require('./components/FormCalcComponent.vue'));
 const app = new Vue({
     el: '#app'
 });
