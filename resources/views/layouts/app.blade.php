@@ -9,13 +9,14 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Laravel') }} {{ app()->version() }}</title>
+        <!--script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script-->
 
         <!-- Styles -->
         <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     </head>
     <body>
     @include('block.menu')
-    @include('block.hero')
+    {{-- @include('block.hero') --}}
     
         <div id="app">
             @yield('content')

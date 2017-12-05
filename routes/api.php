@@ -16,3 +16,6 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/tickers/list', 'ApiController@getListTickers');
+Route::get('/ticker/last', 'ApiController@getLastTicker');

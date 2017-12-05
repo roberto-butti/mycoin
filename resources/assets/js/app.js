@@ -17,6 +17,13 @@ window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('formcalc', require('./components/FormCalcComponent.vue'));
+Vue.component('lasttickerlist', require('./components/LastTickerList.vue'));
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    methods: {
+
+        
+
+        
+    }
 });
