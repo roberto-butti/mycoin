@@ -1,9 +1,10 @@
 <template>
     <div>
-        <h1 class="title" v-if="this.lasttickers[0]">{{ this.lasttickers[0]['last'] }}</h1>
+        <button v-on:click="this.fetchTickersList" class="button is-primary">UPDATE {{ currency }}</button>
+        <h1 class="title" v-if="this.lasttickers[0]">{{ this.lasttickers[0]['last'] }} {{ this.lasttickers[0]['fund_id'] }}</h1>
         <p v-for="(item, index) in this.lasttickers">
             
-            {{ index}} {{ item.date }} - {{ item.last }} - {{ item.fund_id }}
+             ({{ item.bid }}) <b>{{ item.last }}</b> ({{ item.ask }}) <small>{{ item.date }}</small>
         </p>
     </div>
 

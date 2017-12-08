@@ -2,7 +2,7 @@
     <div>
         <div class="columns is- is-marginless">
             <div class="column is-6">
-            <button v-on:click="this.fetchTickerLast" class="button is-primary">UPDATE {{ currency }}</button>
+                <button v-on:click="this.fetchTickerLast" class="button is-primary">UPDATE {{ currency }}</button>
             </div>
             <div class="column is-6" v-if="loading">
                 Updating
@@ -51,8 +51,8 @@
         },
         data() {
             return {
-                qty:3.5,
-                price:2.8,
+                qty:0.005,
+                price:12800,
                 currentvalue:0,
                 loading: false
             }
