@@ -19,14 +19,46 @@ class ApiController extends Controller
         //return view('home',['tickers' => $tickers, 'lastticker' => $ticker, 'currency' => $currency]);
     }
 
-    public function getLastTicker() {
-        $currency = 'BTCEUR';
-        $ticker = \App\Ticker::where('fund_id', $currency)
+    private function getLastTickerByCurrency($currency) {
+        return \App\Ticker::where('fund_id', $currency)
         ->select('date', 'last', 'fund_id')
         ->orderBy('date', 'desc')
         ->first();
-        return $ticker; 
+    }
+
+    public function getLastTicker() {
         
+        return $this->getLastTickerByCurrency("BTCEUR");
+        
+        
+    }
+
+    public function getBalances() {
+        $email=env("ROCKET_EMAIL");
+        $user = \App\User::where('email', $email)->first();
+        //$user;
+        $balances = $user->balances;
+        //dd($balances);
+        //return $balances;
+        $retval = [];
+        $row = [];
+        foreach ($balances as $key => $value) {
+             # code...
+            $row = $value;
+            $currency = strtoupper($value["currency"])."EUR";
+            //echo $currency;
+            $lastTicker = $this->getLastTickerByCurrency($currency);
+            
+            $moltiplicator = ($lastTicker) ? $lastTicker->last : 0;
+            $moltiplicator = ($currency == "EUREUR") ? 1 : $moltiplicator;
+            
+            $row["eur"] = $value["balance"] * $moltiplicator;
+            //echo $value->currency;
+            $retval[] = $row;
+            //dd($value);
+        }
+        return $retval;
+
     }
 
 
