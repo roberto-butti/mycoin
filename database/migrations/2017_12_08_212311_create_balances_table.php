@@ -15,7 +15,15 @@ class CreateBalancesTable extends Migration
     {
         Schema::create('balances', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('user_id')->unsigned();
+            $table->string('currency');
+            $table->double('balance');
+            $table->double('trading_balance');
             $table->timestamps();
+
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->index('currency');
         });
     }
 

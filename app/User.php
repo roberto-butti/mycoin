@@ -26,4 +26,13 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+
+    /**
+     * Get the balances for the user.
+     */
+    public function balances()
+    {
+        return $this->hasMany('App\Balance');
+    }
 }

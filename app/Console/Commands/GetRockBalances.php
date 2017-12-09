@@ -39,6 +39,7 @@ class GetRockBalances extends Command
     {
         $apiKey=env("ROCKET_APIKEY");
         $apiSecret=env("ROCKET_SECRET");
+        $email=env("ROCKET_EMAIL");
         
         $fund_id="PPCEUR";
         
@@ -64,10 +65,26 @@ class GetRockBalances extends Command
         curl_close($ch);
         if ($httpCode == 200) {
             $result=json_decode($callResult,true);
+            $user = \App\User::where('email', $email)->first();
+            echo $user;
             foreach ($result["balances"] as $key => $value) {
                 echo $value['currency'];
                 echo $value['balance'];
                 echo $value['trading_balance'];
+                
+
+                
+                $bal = \App\Balance::updateOrCreate(
+                    ['currency' => $value['currency'],'user_id'=>$user->id],
+                    [
+                        'currency' => $value['currency'],
+                        'balance' => $value['balance'],
+                        'trading_balance'=>$value['trading_balance'],
+                        'user_id'=>$user->id
+                    ]
+
+                );
+                
                 
 
                 //echo "---".$value['price'] * $value['amount']."---";
