@@ -15,6 +15,10 @@
     <a class="navbar-item" href="{{ route('home') }}">
       Home
     </a>
+    <a class="navbar-item" href="{{ route('dashboard') }}">
+      Dashboard
+    </a>
+    
     <!--
     <div class="navbar-item has-dropdown is-hoverable">
       <a class="navbar-link" href="#">
@@ -49,6 +53,33 @@
     </div>
     -->
   </div>
+  <div class="navbar-end">
+    @if (Auth::guest())
+        <a class="navbar-item " href="{{ route('login') }}">Login</a>
+        <!--a class="navbar-item " href="{{ route('register') }}">Register</a-->
+    @else
+
+
+        <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link" href="#">{{ Auth::user()->name }}</a>
+
+            <div class="navbar-dropdown">
+                <a class="navbar-item" href="{{ route('logout') }}"
+                    onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                  <span class="icon" >
+                    <i class="fa fa-lg fa-sign-out "></i>
+                  </span>
+                  Logout
+                </a>
+
+                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                      style="display: none;">
+                    {{ csrf_field() }}
+                </form>
+            </div>
+        </div>
+    @endif
+</div>
 <!--
   <div class="navbar-end">
     <div class="navbar-item">

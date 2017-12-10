@@ -23,7 +23,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $currency = 'PPCEUR';
+        $currency = 'BTCEUR';
         $tickers = \App\Ticker::where('fund_id', $currency)
         ->select('date', 'last', 'fund_id')
         ->orderBy('date', 'desc')
@@ -32,6 +32,12 @@ class HomeController extends Controller
         ->get();
         $ticker = $tickers[0];
         return view('home',['tickers' => $tickers, 'lastticker' => $ticker, 'currency' => $currency]);
+    }
+
+    public function dashboard() {
+        $currency = "BTC";
+        return view('dashboard',[ 'currency' => $currency]);
+
     }
 
     public function getTickers() {
