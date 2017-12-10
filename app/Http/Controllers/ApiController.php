@@ -33,7 +33,42 @@ class ApiController extends Controller
         
     }
 
-    public function getBalances() {
+    private function calculateIntermediate($currency_from, $currency_to,$balance=0,  $prefix="intermediate") {
+        $row = [];
+        $currency_from = strtoupper($currency_from);
+        $currency_to = strtoupper($currency_to);
+
+        $instrument = $currency_from.$currency_to;
+        $lastTicker = $this->getLastTickerByCurrency($instrument);
+        $needtomultiply = true;
+        if ( ! $lastTicker) {
+            $instrument = $currency_to.$currency_from;
+            $lastTicker = $this->getLastTickerByCurrency($instrument);
+            $needtomultiply = false;
+        }
+        $moltiplicator = 1;
+        if ($lastTicker) {
+            $moltiplicator = $lastTicker->last;
+            $moltiplicator = ($instrument == "EUREUR") ? 1 : $moltiplicator;
+
+            $row[$prefix."_instrument"] = $instrument;
+            $row[$prefix."_currency"] = $currency_to;
+            $row[$prefix."_change"] = $moltiplicator;
+            
+            if ($needtomultiply) {
+                $row[$prefix."_value"] = $balance * $moltiplicator;
+                $row[$prefix."_operation"] = "*";
+            } else {
+                $row[$prefix."_value"] = $balance / $moltiplicator;
+                $row[$prefix."_operation"] = "/";
+            }
+            
+    
+        }
+        return $row;
+    }
+
+    public function getBalances($currency="PPC") {
         $email=env("ROCKET_EMAIL");
         $user = \App\User::where('email', $email)->first();
         //$user;
@@ -42,20 +77,46 @@ class ApiController extends Controller
         //return $balances;
         $retval = [];
         $row = [];
+        $finalCurrency="EUR";
+        $intermediateCurrecy=$currency;
         foreach ($balances as $key => $value) {
              # code...
-            $row = $value;
-            $currency = strtoupper($value["currency"])."EUR";
-            //echo $currency;
-            $lastTicker = $this->getLastTickerByCurrency($currency);
-            
-            $moltiplicator = ($lastTicker) ? $lastTicker->last : 0;
-            $moltiplicator = ($currency == "EUREUR") ? 1 : $moltiplicator;
-            
-            $row["eur"] = $value["balance"] * $moltiplicator;
-            //echo $value->currency;
-            $retval[] = $row;
-            //dd($value);
+            if ($value["balance"] != 0 ) {
+                $row = $value->toArray();
+                $prefix1 = "intermediate";
+                $row1 = $this->calculateIntermediate($value["currency"], $intermediateCurrecy, $value["balance"], $prefix1);
+                //print_r($row);
+                $row = array_merge($row, $row1);
+                $prefix2 = "finale";
+                $row2 = $this->calculateIntermediate($intermediateCurrecy, $finalCurrency, $row[$prefix1."_value"], $prefix2);
+                //print_r($row);
+                $row = array_merge($row, $row2);
+                
+                /*
+                $instrument = strtoupper($value["currency"]).$intermediateCurrecy;
+
+                $lastTicker = $this->getLastTickerByCurrency($instrument);
+                $moltiplicator = ($lastTicker) ? $lastTicker->last : 0;
+                $moltiplicator = ($instrument == "EUREUR") ? 1 : $moltiplicator;
+                $row["intermediate1_instrument"] = $instrument;
+                $row["intermediate1_currency"] = $intermediateCurrecy;
+                $row["intermediate1_value"] = $value["balance"] / $moltiplicator;
+    
+                $instrument = $intermediateCurrecy.strtoupper($value["currency"]);
+                $lastTicker = $this->getLastTickerByCurrency($instrument);
+                $moltiplicator = ($lastTicker) ? $lastTicker->last : 0;
+                $moltiplicator = ($instrument == "EUREUR") ? 1 : $moltiplicator;
+                $row["intermediate2_instrument"] = $instrument;
+                $row["intermediate2_currency"] = $intermediateCurrecy;
+                $row["intermediate2_moltiplicator"] = $moltiplicator;
+                $row["intermediate2_value"] = number_format($value["balance"] * $moltiplicator, 8, '.', ' ');;
+                */
+                //$row["eur"] = $value["balance"] * $moltiplicator;
+                //echo $value->currency;
+                $retval[] = $row;
+                //dd($value);
+    
+            }
         }
         return $retval;
 
