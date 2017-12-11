@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+    <balance></balance>
     <div class="columns is- is-marginless">
         <div class="column is-4">
             DASHBOARD1

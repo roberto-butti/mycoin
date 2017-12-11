@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ApiController extends Controller
 {
@@ -46,10 +47,13 @@ class ApiController extends Controller
             $lastTicker = $this->getLastTickerByCurrency($instrument);
             $needtomultiply = false;
         }
+        Log::info('instrument: '.$instrument);
         $moltiplicator = 1;
         if ($lastTicker) {
+            Log::info('c1: '.$currency_from);
+            Log::info('c2: '.$currency_to);
             $moltiplicator = $lastTicker->last;
-            $moltiplicator = ($instrument == "EUREUR") ? 1 : $moltiplicator;
+            $moltiplicator = ($currency_to == $currency_from) ? 1 : $moltiplicator;
 
             $row[$prefix."_instrument"] = $instrument;
             $row[$prefix."_currency"] = $currency_to;
@@ -59,11 +63,21 @@ class ApiController extends Controller
                 $row[$prefix."_value"] = $balance * $moltiplicator;
                 $row[$prefix."_operation"] = "*";
             } else {
-                $row[$prefix."_value"] = $balance / $moltiplicator;
+                $row[$prefix."_value"] = $moltiplicator / $balance;
                 $row[$prefix."_operation"] = "/";
             }
             
     
+        } else {
+            Log::info('c1: '.$currency_from);
+            Log::info('c2: '.$currency_to);
+            Log::info('same currency, no instrument');
+            $row[$prefix."_instrument"] = $instrument;
+            $row[$prefix."_currency"] = $currency_to;
+            $row[$prefix."_change"] = 1;
+            $row[$prefix."_value"] = $balance;
+            $row[$prefix."_operation"] = "*";
+
         }
         return $row;
     }
