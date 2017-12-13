@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Log;
 
 class ApiController extends Controller
 {
+
+
+
     public function getListTickers()
     {
         $currency = 'BTCEUR';
@@ -82,7 +85,41 @@ class ApiController extends Controller
         return $row;
     }
 
-    public function getBalances($currency="PPC") {
+    
+    public function getBalances($currency="EUR") {
+        $email=env("ROCKET_EMAIL");
+        $user = \App\User::where('email', $email)->first();
+        $balances = $user->balances;
+
+        $retval = [];
+        $row = [];
+        $finalCurrency="EUR";
+        foreach ($balances as $key => $value) {
+            if ($value["balance"] != 0 ) {
+                $row = $value->toArray();
+                $prefix1 = "final";
+                $row1 = $this->calculateIntermediate($value["currency"], $finalCurrency, $value["balance"], $prefix1);
+                $row = array_merge($row, $row1);
+                $retval[] = $row;
+            }
+        }
+        return $retval;
+
+    }
+
+    public function refreshBalance() {
+        \App\RockApi::balances();
+        return "1";
+    }
+
+    public function getTickers() {
+        $result = \App\RockApi::tickers();
+        return $result;
+    }
+
+
+
+    public function getBalances3($currency="PPC") {
         $email=env("ROCKET_EMAIL");
         $user = \App\User::where('email', $email)->first();
         //$user;

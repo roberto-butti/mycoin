@@ -20,5 +20,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/tickers/list', 'ApiController@getListTickers');
 Route::get('/ticker/last', 'ApiController@getLastTicker');
 Route::get('/tickers/analyze', 'ApiController@analyzeTickers');
-Route::get('/balances/{currency?}', 'ApiController@getBalances');
+Route::get('/balances3/{currency?}', 'ApiController@getBalances3');
+Route::get('/balances', 'ApiController@getBalances');
+Route::get('/balances/refresh', 'ApiController@refreshBalance');
+Route::get('/rock/tickers', 'ApiController@getTickers');
+
 

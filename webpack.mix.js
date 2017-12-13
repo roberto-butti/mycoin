@@ -13,9 +13,9 @@ let mix = require('laravel-mix');
 
 mix.js('resources/assets/js/app.js', 'public/js')
 .version()
-    //.extract(['vue'])
-   .sass('resources/assets/sass/app.scss', 'public/css').version();;
+.sass('resources/assets/sass/app.scss', 'public/css').version();
 
+mix.sourceMaps();
 mix.browserSync({
     proxy: 'mycoin.dev'
 });

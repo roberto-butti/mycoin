@@ -17,11 +17,12 @@
         "bulma-extensions": "^0.5.2",
         "cross-env": "^5.1",
         "jquery": "^3.2",
-        "laravel-mix": "^1.0",
+        "laravel-mix": "^1.7.2",
         "lodash": "^4.17.4",
-        "vue": "^2.5.7"
+        "vue": "^2.5.10"
     },
     "dependencies": {
+        "pusher-js": "^4.2.1",
         "vue-loader": "^13.5.0"
     }
 }
