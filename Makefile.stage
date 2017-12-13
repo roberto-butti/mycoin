@@ -26,6 +26,9 @@ copyenvprod:
 backupremotetickers:
 	ssh ${SSH_ALIAS} "mysqldump -umycoin -p db_mycoin tickers  > tickers.sql"
 	scp ${SSH_ALIAS}:tickers.sql tickers.sql
+
+getremotebalances: ## Update Balances from RockTrading on the SERVER
+	ssh ${SSH_ALIAS} "php /var/www/mycoin.odotalk.com/htdocs/artisan mycoin:getrockbalances"
 	
 
 fixownership: ## Execute DU command in htdocs dir, just for diagnostic purpose
