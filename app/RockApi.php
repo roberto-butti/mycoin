@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\Log;
+
 
 
 class RockApi {
@@ -40,12 +42,28 @@ class RockApi {
     }
 
     public static function callApi($url) {
-        $client = new \GuzzleHttp\Client();
-        //$request = new \GuzzleHttp\Psr7\Request('GET', $url);
-        $response = $client->request('GET', $url);
-        $json =  $response->getBody();
-        $jobj = json_decode($json, true);
+        $jobj = "{}";
+        try {
+            $client = new \GuzzleHttp\Client();
+            //$request = new \GuzzleHttp\Psr7\Request('GET', $url);
+            $response = $client->request('GET', $url);
+            $json =  $response->getBody();
+            $jobj = json_decode($json, true);    
+        } catch (\Exception $e) {
+            Log::error('Error in '.__METHOD__.' : '.$e->getMessage());
+        }
         return $jobj;
+    }
+
+    /**
+     * Get the current status of instrument (fund_id)
+     * https://api.therocktrading.com/doc/v1/index.html#api-Market_API-Ticker
+     * Get ticker of a choosen fund.
+     */
+    public static function ticker($instrument) {
+        $url="https://api.therocktrading.com/v1/funds/".$instrument."/ticker";
+        $result = self::callApi($url);
+        return $result;        
     }
 
     public static function tickers() {

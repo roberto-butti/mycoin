@@ -1,59 +1,64 @@
 <template>
-<div class="container is-fluid">
-  <table class="table is-bordered is-striped is-narrow is-fullwidth">
-  <thead>
-    <tr>
-      <th colspan="2">BALANCE</th>
-      <th colspan="3">CONVERSION</th>
-      <th ></th>
-    </tr>
-    <tr>
-        <th>Currency</th>
-        <th>Amount</th>
-        <!--th>Instrument</th-->
-        <th>Change</th>
-        <th>Currency</th>
-        <th>Amount</th>
-        <th><button @click.prevent="refreshBalance()" class="button is-success">Refresh</button></th>
-        
-    </tr>
+    <div class="columns is- is-marginless">
+        <div class="column is-6">
+            <table class="table is-bordered is-striped is-narrow is-fullwidth">
+            <thead>
+            <tr>
+                <th>Curr</th>
+                <th>Amount</th>
+                <!--th>Instrument</th-->
+                <th>Change</th>
+                <th>Amount</th>
+                <th><button @click.prevent="refreshBalance()" class="button is-success">Refresh</button></th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>
+                <th>Curr</th>
+                <th>Amount</th>
+                <!--th>Instrument</th-->
+                <th>Change</th>
+                <th>{{ total }}</th>
+                <th></th>
+            </tr>
+            </tr>
+            </tfoot>
+            <tbody>
+            <tr v-for="(item, index) in this.balances">
+                <td>{{ item.currency }}</td>
+                <td>{{ item.balance }}</td>
+                <!--td>{{ item.final_instrument }}</td-->
+                <td>{{ item.final_change }}</td>
+                <td>{{ item.final_currency }}
+                {{ item.final_value.toFixed(8) }}</td>
+                <td ><button @click.prevent="selectItem(item)" class="button is-success">
+                {{ item.currency }}
+            </button></td>
+            </tr>
+            </tbody>
+            </table>
 
-    
-  </thead>
-  <tfoot>
-    <tr>
-        <th>Currency</th>
-        <th>Amount</th>
-        <!--th>Instrument</th-->
-        <th>Change</th>
-        <th>Currency</th>
-        <th>{{ total }}</th>
-        <th></th>
-    </tr>
-    </tr>
-  </tfoot>
-    <tbody>
-    <tr v-for="(item, index) in this.balances">
-        <td>{{ item.currency }}</td>
-        <td>{{ item.balance }}</td>
-        <!--td>{{ item.final_instrument }}</td-->
-        <td>{{ item.final_change }}</td>
-        <td>{{ item.final_currency }}</td>
-        <td>{{ item.final_value }}</td>
-        <td ><button @click.prevent="selectItem(item)" class="button is-success">
-      {{ item.currency }}
-    </button></td>
-    </tr>
-    </tbody>
-  </table>
-          <p v-for="(item, index) in this.tickers['tickers']">
-            
-             {{ item.fund_id }} ({{ item.bid }}) <!--b>{{ item.last }}</b--> ({{ item.ask }})<b>{{ differenceBidAsk(index) }}</b> <!--small>{{ item.date }}</small-->
-        </p>
-  <div v-if="selected != null">
-    <currencydetail :currency="selected.currency"></currencydetail>
-  </div>
-</div>
+            <div v-if="selected != null">
+                <currencydetail :balance="selected.balance" :currency="selected.currency"></currencydetail>
+            </div>
+
+        </div>
+        <div class="column is-4">
+            <h2 class="title">Ticker and Spread</h2>
+            <button @click.prevent="fetchTickers()" class="button">refresh</button>
+            <p v-for="(item, index) in this.tickers['tickers']">
+                {{ item.fund_id }} ({{ item.bid }}) <!--b>{{ item.last }}</b--> ({{ item.ask }})<span class="tag" v-bind:class="{ 'is-warning':differenceBidAsk(index)>3 && differenceBidAsk(index)<=5,  'is-success': differenceBidAsk(index)>5 }">{{ differenceBidAsk(index) }}</span> <!--small>{{ item.date }}</small-->
+            </p>
+        
+        </div>
+        <div class="column is-2">
+            <realtime></realtime>
+        </div>
+        
+       
+
+    </div>
+
 </template>
 
 <script>
@@ -90,7 +95,7 @@
                 console.log(i);
                 var t = this.tickers['tickers'][i];
                 console.log(t);
-                return Math.abs(1 - (t.ask / t.bid)) *100;
+                return (Math.abs(1 - (t.ask / t.bid)) *100).toFixed(3);
             },
 
             selectItem(item) {

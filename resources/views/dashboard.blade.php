@@ -1,21 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <balance></balance>
-    <div class="columns is- is-marginless">
-        <div class="column is-4">
-            DASHBOARD1
-        </div>
-        <div class="column is-4">
-            DASHBOARD2
-        </div>
-        <div class="column is-4">
-            DASHBOARD3
-        </div>
-       
-
-    </div>
+<div class="container is-fluid">
+<balance></balance>
     
 </div>
 @endsection

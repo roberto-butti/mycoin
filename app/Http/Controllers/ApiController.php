@@ -117,6 +117,12 @@ class ApiController extends Controller
         return $result;
     }
 
+    public function getTicker($instrument) {
+
+        $result = \App\RockApi::ticker($instrument);
+        return $result;
+    }
+
 
 
     public function getBalances3($currency="PPC") {
