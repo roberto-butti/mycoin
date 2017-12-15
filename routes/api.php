@@ -25,5 +25,6 @@ Route::get('/balances', 'ApiController@getBalances');
 Route::get('/balances/refresh', 'ApiController@refreshBalance');
 Route::get('/rock/tickers', 'ApiController@getTickers');
 Route::get('/rock/ticker/{instrument}', 'ApiController@getTicker');
+Route::get('/rock/orders/{instrument}', 'ApiController@getOrders');
 
 

@@ -66,9 +66,17 @@ class RockApi {
         return $result;        
     }
 
+    public static function orders($instrument) {
+        $url = "https://api.therocktrading.com/v1/funds/".$instrument."/orders";
+        $result = self::callPrivateApi($url);
+        return $result;
+
+    }
+
     public static function tickers() {
         $url = "https://api.therocktrading.com/v1/funds/tickers";
         $result = self::callApi($url);
+
         return $result;
     }
     public static function balances()

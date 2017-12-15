@@ -117,6 +117,11 @@ class ApiController extends Controller
         return $result;
     }
 
+    public function getOrders($instrument) {
+        $result = \App\RockApi::orders($instrument);
+        return $result;
+    }
+
     public function getTicker($instrument) {
 
         $result = \App\RockApi::ticker($instrument);
