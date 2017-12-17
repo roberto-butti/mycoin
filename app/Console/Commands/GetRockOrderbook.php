@@ -4,21 +4,21 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-class GetRockOrders extends Command
+class GetRockOrderbook extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'mycoin:getrockorders {fund_id : the instrument (LTCEUR, BTCEUR...)}';
+    protected $signature = 'mycoin:getrockorderbook { fund_id : the instrument of the orderbook (LTCEUR, BTCEUR...)}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'List Your Order';
+    protected $description = 'Get Orderbook of Instrument';
 
     /**
      * Create a new command instance.
@@ -37,11 +37,13 @@ class GetRockOrders extends Command
      */
     public function handle()
     {
+        
         $fund_id = $this->argument('fund_id');
-        $result = \App\RockApi::orders($fund_id);
-        $headers=["id",'fund_id','side','price', 'amount', 'status'];
-        $this->table($headers, $result["orders"]);   
+        $result = \App\RockApi::orderbook($fund_id);
+        $headers=["Price",'Quantity','Depth EUR'];
+        $this->info("ASK (SELL) you want Sell");
+        $this->table($headers, array_slice($result["asks"], 0, 3));
+        $this->info("BID (BUY) you want Buy");
+        $this->table($headers, array_slice($result["bids"], 0, 3));
     }
-
-
 }

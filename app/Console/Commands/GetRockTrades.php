@@ -37,7 +37,7 @@ class GetRockTrades extends Command
      */
     public function handle()
     {
-        $fund_id="PPCEUR";
+        $fund_id="LTCEUR";
         
         $url="https://api.therocktrading.com/v1/funds/".$fund_id."/trades";
         

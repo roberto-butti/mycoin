@@ -8,10 +8,17 @@ use Illuminate\Support\Facades\Log;
 
 class RockApi {
 
-    private static function callPrivateApi($url) {
+    private static function callPrivateApi($url, $custom_method="GET", $params = []) {
 
-        $apiKey=env("ROCKET_APIKEY");
-        $apiSecret=env("ROCKET_SECRET");
+        if ($custom_method == "DELETE" || $custom_method == "POST") {
+            $apiKey = env("ROCKET_TRADE_APIKEY");
+            $apiSecret=env("ROCKET_TRADE_SECRET");
+        } else {
+            $apiKey=env("ROCKET_APIKEY");
+            $apiSecret=env("ROCKET_SECRET");
+        }
+        
+        
         
         
 
@@ -27,15 +34,21 @@ class RockApi {
         
         $ch=curl_init();
         curl_setopt($ch,CURLOPT_URL,$url);
-        curl_setopt($ch,CURLOPT_CUSTOMREQUEST,"GET");
+        curl_setopt($ch,CURLOPT_CUSTOMREQUEST,$custom_method);
+        if ($custom_method == "POST" ) {
+            curl_setopt($ch,CURLOPT_POST,TRUE);
+            curl_setopt($ch,CURLOPT_POSTFIELDS,json_encode($params));
+        }
         curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
         $callResult=curl_exec($ch);
         $httpCode=curl_getinfo($ch,CURLINFO_HTTP_CODE);
         curl_close($ch);
         $result = false;
-        if ($httpCode == 200) {
+        if ($httpCode == 200 || $httpCode == 201) {
             $result=json_decode($callResult,true);                
+        } else {
+            $result="errore:$httpCode";
         }
         return $result;
 
@@ -66,11 +79,34 @@ class RockApi {
         return $result;        
     }
 
+    /**
+     * Get the orders of current user
+     * The Orders are related to the Instrument $instrument (LTCEUR, PPCEUR...)
+     */
     public static function orders($instrument) {
         $url = "https://api.therocktrading.com/v1/funds/".$instrument."/orders";
         $result = self::callPrivateApi($url);
         return $result;
+    }
 
+    public static function order_delete($instrument, $order_id) {
+        $url="https://api.therocktrading.com/v1/funds/".$instrument."/orders/".$order_id;
+        $result = self::callPrivateApi($url, "DELETE");
+        //$result = $url;
+        return $result;
+    }
+
+    public static function order_create($fund_id, $params) {
+        $url="https://api.therocktrading.com/v1/funds/".$fund_id."/orders";
+        $result = self::callPrivateApi($url, "POST", $params);
+        //$result = $url;
+        return $result;
+    }
+
+    public static function orderbook($instrument) {
+        $url="https://api.therocktrading.com/v1/funds/".$instrument."/orderbook";
+        $result = self::callPrivateApi($url);
+        return $result;
     }
 
     public static function tickers() {
@@ -79,6 +115,9 @@ class RockApi {
 
         return $result;
     }
+
+
+
     public static function balances()
     {
         $url="https://api.therocktrading.com/v1/balances";
