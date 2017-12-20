@@ -1,11 +1,11 @@
 <template>
     <div class="container">
-        With {{ currency }} you can:
-        <div v-if="currency=='LTC'">
-            <b>SELL</b> LTC via LTCEUR with {{ this.balance }} {{ this.currency }}.
+        With {{ this.balanceitem.currency }} you can:
+        <div v-if="this.balanceitem.currency=='LTC'">
+            <b>SELL</b> LTC via LTCEUR with {{ this.balanceitem.balance }} {{ this.balanceitem.currency }}.
             <button @click.prevent="fetchInstrument('LTCEUR')" class="button is-success">LTCEUR</button>
             <div v-if="this.ticker">
-            I suggest to SELL {{ this.balance }} {{ this.currency }} for {{ this.ticker['ask'] }} {{ this.ticker.currency }}
+            I suggest to SELL {{ this.balanceitem.balance }} {{ this.balanceitem.currency }} for {{ this.ticker['ask'] }} {{ this.ticker.currency }}
             at price 
             </div>
             <div v-if="this.orders">
@@ -19,16 +19,15 @@
             </div>
             
         </div>
-        <div v-if="currency=='EUR'">
+        <div v-if="this.balanceitem.currency=='EUR'">
             <b>BUY</b> LTC.
             You can buy LTC (via LTCEUR) with {{ this.balance }} {{ this.currency }}.
             
             
         </div>
-        <div v-if="currency=='PPC'">
-            <b>SELL {{ this.balance }}</b> PPC for EUR.
-            You can buy LTC (via LTCEUR).
-            
+        <div v-if="this.balanceitem.currency=='PPC'">
+            You have {{ this.balanceitem.balance }} {{ this.balanceitem.currency }}<br>
+            You can <b>SELL {{ this.balanceitem.trading_balance }}</b> {{ this.balanceitem.currency }} for EUR.
             
         </div>
 
@@ -47,14 +46,9 @@ import Pusher from 'pusher-js' // import Pusher
             }
         },
         props: {
-            'currency':{
-                type: String,
-                default: ""
-            },
-            'balance': {
-                type: Number,
-                default: 0
-                
+            'balanceitem':{
+                type:Object,
+                default: false
             }
         },
         methods: {
@@ -91,7 +85,7 @@ import Pusher from 'pusher-js' // import Pusher
         },
         mounted() {
             
-            console.log('Component Currency mounted.'+this.currency)
+            console.log('Component Currency mounted.'+this.balanceitem.currency)
         }
     }
 </script>

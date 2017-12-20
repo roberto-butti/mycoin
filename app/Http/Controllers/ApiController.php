@@ -87,8 +87,8 @@ class ApiController extends Controller
 
     
     public function getBalances($currency="EUR") {
-        $email=env("ROCKET_EMAIL");
-        $user = \App\User::where('email', $email)->first();
+        $user = \Auth::user();
+
         $balances = $user->balances;
 
         $retval = [];

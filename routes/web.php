@@ -17,7 +17,13 @@ Route::get('/', function () {
 });
 */
 Route::get('/', 'HomeController@index')->name('home');
-Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
+Route::get('/my', 'HomeController@dashboard')->name('dashboard')->middleware('auth');
+
+
+Route::get('/api/balances', 'ApiController@getBalances')->middleware('auth');
+Route::get('/api/balances/refresh', 'ApiController@refreshBalance');
+
+//Route::get('/my/{catchall?}', 'HomeController@my')->name("my")->where('catchall', '(.*)');
 
 
 Auth::routes();

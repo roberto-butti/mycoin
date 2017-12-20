@@ -1,17 +1,7 @@
 <template>
     <div class="columns is- is-marginless">
-        <div class="column is-6">
+        <div class="column is-8">
             <table class="table is-bordered is-striped is-narrow is-fullwidth">
-            <thead>
-            <tr>
-                <th>Curr</th>
-                <th>Amount</th>
-                <!--th>Instrument</th-->
-                <th>Change</th>
-                <th>Amount</th>
-                <th><button @click.prevent="refreshBalance()" class="button is-success">Refresh</button></th>
-            </tr>
-            </thead>
             <tfoot>
             <tr>
                 <th>Curr</th>
@@ -19,19 +9,20 @@
                 <!--th>Instrument</th-->
                 <th>Change</th>
                 <th>{{ total }}</th>
-                <th></th>
-            </tr>
+                <th>Available</th>
+                <th><button @click.prevent="refreshBalance()" class="button is-small is-success" v-bind:class="{ 'is-loading': loading }">Refresh</button></th>
             </tr>
             </tfoot>
             <tbody>
-            <tr v-for="(item, index) in this.balances">
+            <tr class="is-small" v-for="(item, index) in this.balances">
                 <td>{{ item.currency }}</td>
                 <td>{{ item.balance }}</td>
                 <!--td>{{ item.final_instrument }}</td-->
                 <td>{{ item.final_change }}</td>
-                <td>{{ item.final_currency }}
+                <td class="is-small">{{ item.final_currency }}
                 {{ item.final_value.toFixed(8) }}</td>
-                <td ><button @click.prevent="selectItem(item)" class="button is-success">
+                <td>{{ item.trading_balance.toFixed(8) }}</td>
+                <td ><button @click.prevent="selectItem(item)" class="button  is-small">
                 {{ item.currency }}
             </button></td>
             </tr>
@@ -39,7 +30,7 @@
             </table>
 
             <div v-if="selected != null">
-                <currencydetail :balance="selected.balance" :currency="selected.currency"></currencydetail>
+                <currencydetail :balanceitem="selected" ></currencydetail>
             </div>
 
         </div>
@@ -51,9 +42,9 @@
             </p>
         
         </div>
-        <div class="column is-2">
+        <!--div class="column is-2">
             <realtime></realtime>
-        </div>
+        </div-->
         
        
 
@@ -104,6 +95,7 @@
             fetchBalanceList(){
                 axios.get('/api/balances').then( (response) => {
                     this.balances = response.data 
+                    this.loading=false;
                     
                 })
                 
@@ -114,8 +106,11 @@
                 })
             },
             refreshBalance(){
+                this.loading=true;
                 axios.get('/api/balances/refresh').then( (response) => {
-                    return this.fetchBalanceList();
+                    res = this.fetchBalanceList();
+                    this.loading=false;
+                    return res;
                     
                 })
                 
@@ -123,7 +118,8 @@
 
         },
         mounted() {
-            this.fetchBalanceList();
+            this.loading=false;
+            this.refreshBalance();
             this.fetchTickers();
         }
     }
