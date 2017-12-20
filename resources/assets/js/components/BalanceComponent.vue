@@ -28,6 +28,18 @@
             </tr>
             </tbody>
             </table>
+            <div class="tabs">
+                <ul>
+                <li v-for="(instrument, index) in this.instruments">
+                    <a @click.prevent="selectInstrument(instrument)" class="  is-small">
+                    {{ instrument }}</a></li>
+
+                </ul>
+            </div>
+
+            <div v-if="selectedInstrument != null">
+                <instrumentdetail :instrument="selectedInstrument" ></instrumentdetail>
+            </div>
 
             <div v-if="selected != null">
                 <currencydetail :balanceitem="selected" ></currencydetail>
@@ -62,6 +74,8 @@
         },
         data() {
             return {
+                selectedInstrument: null,
+                instruments: ["LTCEUR", "PPCEUR", "ETHEUR", "BTCEUR"],
                 loading: false,
                 balances: [],
                 sum:0,
@@ -91,6 +105,9 @@
 
             selectItem(item) {
                 this.selected = item
+            },
+            selectInstrument(instrument) {
+                this.selectedInstrument = instrument;
             },
             fetchBalanceList(){
                 axios.get('/api/balances').then( (response) => {

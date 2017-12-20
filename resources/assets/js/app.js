@@ -20,6 +20,7 @@ Vue.component('formcalc', require('./components/FormCalcComponent.vue'));
 Vue.component('lasttickerlist', require('./components/LastTickerList.vue'));
 Vue.component('balance', require('./components/BalanceComponent.vue'));
 Vue.component('currencydetail', require('./components/CurrencyDetailComponent.vue'));
+Vue.component('instrumentdetail', require('./components/InstrumentDetailComponent.vue'));
 Vue.component('realtime', require('./components/RealtimeComponent.vue'));
 
 
