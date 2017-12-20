@@ -21,10 +21,9 @@ Route::get('/tickers/list', 'ApiController@getListTickers');
 Route::get('/ticker/last', 'ApiController@getLastTicker');
 Route::get('/tickers/analyze', 'ApiController@analyzeTickers');
 Route::get('/balances3/{currency?}', 'ApiController@getBalances3');
-Route::get('/balances', 'ApiController@getBalances');
-Route::get('/balances/refresh', 'ApiController@refreshBalance');
 Route::get('/rock/tickers', 'ApiController@getTickers');
 Route::get('/rock/ticker/{instrument}', 'ApiController@getTicker');
 Route::get('/rock/orders/{instrument}', 'ApiController@getOrders');
+Route::get('/rock/orderbook/{instrument}/{limit?}', 'ApiController@getOrderbook');
 
 

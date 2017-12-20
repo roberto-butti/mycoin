@@ -117,6 +117,16 @@ class ApiController extends Controller
         return $result;
     }
 
+    public function getOrderbook($fund_id, $limit=false) {
+        $result = \App\RockApi::orderbook($fund_id);
+        if ($limit) {
+            $result["asks"] = array_slice($result["asks"], 0, $limit);
+            $result["bids"] = array_slice($result["bids"], 0, $limit);
+
+        }
+        return $result;
+    }
+
     public function getOrders($instrument) {
         $result = \App\RockApi::orders($instrument);
         return $result;
