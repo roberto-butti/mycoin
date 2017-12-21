@@ -1,30 +1,32 @@
 <template>
     <div class="columns is- is-marginless">
-        <div class="column is-8">
+        <div class="column is-4">
             <table class="table is-bordered is-striped is-narrow is-fullwidth">
+            <thead>
+            <tr>
+                <th colspan="2">Your Balance</th>
+            </tr>
+            </thead>
             <tfoot>
             <tr>
-                <th>Curr</th>
-                <th>Amount</th>
-                <!--th>Instrument</th-->
-                <th>Change</th>
                 <th>{{ total }}</th>
-                <th>Available</th>
                 <th><button @click.prevent="refreshBalance()" class="button is-small is-success" v-bind:class="{ 'is-loading': loading }">Refresh</button></th>
             </tr>
             </tfoot>
             <tbody>
             <tr class="is-small" v-for="(item, index) in this.balances">
-                <td>{{ item.currency }}</td>
-                <td>{{ item.balance }}</td>
+                <td class="numbercell">
+                    {{ item.currency }} {{ item.balance }}<br>
+                    Avail. {{ item.trading_balance.toFixed(8) }}
+                </td>
                 <!--td>{{ item.final_instrument }}</td-->
-                <td>{{ item.final_change }}</td>
                 <td class="is-small">{{ item.final_currency }}
-                {{ item.final_value.toFixed(8) }}</td>
-                <td>{{ item.trading_balance.toFixed(8) }}</td>
-                <td ><button @click.prevent="selectItem(item)" class="button  is-small">
-                {{ item.currency }}
-            </button></td>
+                {{ item.final_value.toFixed(8) }}
+                <br>
+                @ {{ item.final_change }}
+                </td>
+                
+                
             </tr>
             </tbody>
             </table>
@@ -47,11 +49,29 @@
 
         </div>
         <div class="column is-4">
-            <h2 class="title">Ticker and Spread</h2>
-            <button @click.prevent="fetchTickers()" class="button">refresh</button>
-            <p v-for="(item, index) in this.tickers['tickers']">
-                {{ item.fund_id }} ({{ item.bid }}) <!--b>{{ item.last }}</b--> ({{ item.ask }})<span class="tag" v-bind:class="{ 'is-warning':differenceBidAsk(index)>3 && differenceBidAsk(index)<=5,  'is-success': differenceBidAsk(index)>5 }">{{ differenceBidAsk(index) }}</span> <!--small>{{ item.date }}</small-->
-            </p>
+            <table class="table is-bordered is-striped is-narrow is-fullwidth">
+            <thead>
+            <tr>
+                <th colspan="2">Ticker and Spread
+                                <button @click.prevent="fetchTickers()" class="button">refresh</button>
+
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="is-small" v-for="(item, index) in this.tickers">
+                <td class="is-small">
+                    {{ item.fund_id }} 
+                </td>
+                <td>
+                    ({{ item.bid }}) <b>{{ item.last }}</b> ({{ item.ask }})
+                </td>
+                <td>
+                    <span class="tag" v-bind:class="{ 'is-warning':differenceBidAsk(index)>3 && differenceBidAsk(index)<=5,  'is-success': differenceBidAsk(index)>5 }">{{ differenceBidAsk(index) }}</span>
+                </td>
+            </tr>
+            </tbody>
+            </table>
         
         </div>
         <!--div class="column is-2">
@@ -98,7 +118,7 @@
         methods: {
             differenceBidAsk: function(i) {
                 //console.log(i);
-                var t = this.tickers['tickers'][i];
+                var t = this.tickers[i];
                 //console.log(t);
                 return (Math.abs(1 - (t.ask / t.bid)) *100).toFixed(3);
             },
@@ -119,13 +139,25 @@
             },
             fetchTickers() {
                 axios.get('/api/rock/tickers').then( (response) => {
-                    this.tickers = response.data 
+                    this.tickers=[];
+                    //console.log(response.data['tickers']);
+                    for (let j = 0; j < response.data['tickers'].length; j++) {
+                        //console.log(this.tickers);
+                        //console.log(response.data['tickers'][j].fund_id);
+                        //console.log(this.instruments);
+                        if (this.instruments.indexOf(response.data['tickers'][j].fund_id) >= 0 ){
+                            this.tickers.push(response.data['tickers'][j]);
+                        } else {
+                            //console.log("-----"+response.data['tickers'][j].fund_id);
+                        }
+                        
+                    }
                 })
             },
             refreshBalance(){
                 this.loading=true;
                 axios.get('/api/balances/refresh').then( (response) => {
-                    res = this.fetchBalanceList();
+                    var res = this.fetchBalanceList();
                     this.loading=false;
                     return res;
                     
@@ -141,3 +173,9 @@
         }
     }
 </script>
+
+<style>
+td.numbercell {
+    text-align: right;
+}
+</style>

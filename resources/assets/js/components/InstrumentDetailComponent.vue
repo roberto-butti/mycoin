@@ -29,7 +29,7 @@ import Pusher from 'pusher-js' // import Pusher
                 orderbook_bids: [],
                 orderbook_asks: [],
                 orderbook_loading: false,
-                newtrade: [{'symbol': 'EUR', 'value':100}]
+                newtrade: []
 
             }
         },
