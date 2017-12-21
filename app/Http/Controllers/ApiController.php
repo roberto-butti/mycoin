@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
+
 
 class ApiController extends Controller
 {
@@ -118,7 +120,17 @@ class ApiController extends Controller
     }
 
     public function getOrderbook($fund_id, $limit=false) {
-        $result = \App\RockApi::orderbook($fund_id);
+        $key_cache = "api_orderbook_$fund_id";
+        
+
+        
+        $result = Cache::get($key_cache);
+        if ( ! $result) {
+            $expiresAt = \Carbon\Carbon::now()->addSeconds(3);
+            $result = \App\RockApi::orderbook($fund_id);
+            Cache::put($key_cache, $result, $expiresAt);
+        }
+        
         if ($limit) {
             $result["asks"] = array_slice($result["asks"], 0, $limit);
             $result["bids"] = array_slice($result["bids"], 0, $limit);

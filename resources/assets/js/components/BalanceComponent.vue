@@ -97,9 +97,9 @@
 
         methods: {
             differenceBidAsk: function(i) {
-                console.log(i);
+                //console.log(i);
                 var t = this.tickers['tickers'][i];
-                console.log(t);
+                //console.log(t);
                 return (Math.abs(1 - (t.ask / t.bid)) *100).toFixed(3);
             },
 
