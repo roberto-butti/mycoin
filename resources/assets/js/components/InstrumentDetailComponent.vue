@@ -8,10 +8,7 @@
 </p>
 
 --------
-<p v-for="(item, index) in this.newtrade">
-        {{ item['symbol'] }}
-        {{ item['value'] }}
-    </p>
+
     </div>
 </template>
 
@@ -29,7 +26,7 @@ import Pusher from 'pusher-js' // import Pusher
                 orderbook_bids: [],
                 orderbook_asks: [],
                 orderbook_loading: false,
-                newtrade: []
+                newtrade: [ ]
 
             }
         },

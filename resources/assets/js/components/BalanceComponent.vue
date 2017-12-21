@@ -1,4 +1,5 @@
 <template>
+<div class="container">
     <div class="columns is- is-marginless">
         <div class="column is-4">
             <table class="table is-bordered is-striped is-narrow is-fullwidth">
@@ -30,6 +31,51 @@
             </tr>
             </tbody>
             </table>
+
+        </div>
+        <div class="column is-4">
+            <table class="table is-bordered is-striped is-narrow is-fullwidth">
+            <thead>
+            <tr>
+                <th colspan="2">
+                    Ticker and Spread
+                </th>
+                <th>
+                    <button @click.prevent="fetchTickers()" class="button is-small">refresh</button>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="is-small" v-for="(item, index) in this.tickers">
+                <td class="is-small">
+                    {{ item.fund_id }} 
+                    <br>
+                     <b>{{ item.last }}</b>
+                </td>
+                <td>
+                    ({{ item.bid }})<br>({{ item.ask }})
+                </td>
+                <td>
+                    <span class="tag" v-bind:class="{ 'is-warning':differenceBidAsk(index)>3 && differenceBidAsk(index)<=5,  'is-success': differenceBidAsk(index)>5 }">{{ differenceBidAsk(index) }}</span>
+                </td>
+            </tr>
+            </tbody>
+            </table>
+        
+        </div>
+        <div class="column is-4">
+            {{ newtrade }}
+            <p v-for="(item, index) in this.newtrade">
+                {{ item['symbol'] }}
+                {{ item['value'] }}
+            </p>
+        </div>
+        
+       
+
+    </div>
+    <div class="columns">
+        <div class="column is-12">
             <div class="tabs">
                 <ul>
                 <li v-for="(instrument, index) in this.instruments">
@@ -48,43 +94,12 @@
             </div>
 
         </div>
-        <div class="column is-4">
-            <table class="table is-bordered is-striped is-narrow is-fullwidth">
-            <thead>
-            <tr>
-                <th colspan="2">Ticker and Spread
-                                <button @click.prevent="fetchTickers()" class="button">refresh</button>
-
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="is-small" v-for="(item, index) in this.tickers">
-                <td class="is-small">
-                    {{ item.fund_id }} 
-                </td>
-                <td>
-                    ({{ item.bid }}) <b>{{ item.last }}</b> ({{ item.ask }})
-                </td>
-                <td>
-                    <span class="tag" v-bind:class="{ 'is-warning':differenceBidAsk(index)>3 && differenceBidAsk(index)<=5,  'is-success': differenceBidAsk(index)>5 }">{{ differenceBidAsk(index) }}</span>
-                </td>
-            </tr>
-            </tbody>
-            </table>
-        
-        </div>
-        <!--div class="column is-2">
-            <realtime></realtime>
-        </div-->
-        
-       
-
     </div>
-
+</div>
 </template>
 
 <script>
+import Pusher from 'pusher-js' // import Pusher
     export default {
         props: {
             'currency':{
@@ -100,7 +115,8 @@
                 balances: [],
                 sum:0,
                 selected: null,
-                tickers: []
+                tickers: [],
+                newtrade: []
             }
         },
         computed: {
@@ -163,6 +179,22 @@
                     
                 })
                 
+            },
+            subscribe () {
+                this.newtrade=[];
+                let pusher = new Pusher('bb1fafdf79a00453b5af');
+                pusher.subscribe('currency')
+                console.log("pusher activate")
+                
+                pusher.bind('last_trade', data => {
+                    //console.log(data);
+                    console.log(this.newtrade);
+                    this.newtrade.unshift(data /*{ "symbol": data["symbol"], "value": data["value"]}*/);
+                    if (this.newtrade.length >10) {
+                        this.newtrade.pop();
+                    }
+                });
+
             }
 
         },
@@ -170,6 +202,7 @@
             this.loading=false;
             this.refreshBalance();
             this.fetchTickers();
+            this.subscribe();
         }
     }
 </script>
