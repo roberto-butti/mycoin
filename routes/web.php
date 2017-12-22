@@ -23,6 +23,7 @@ Route::get('/my', 'HomeController@dashboard')->name('dashboard')->middleware('au
 Route::get('/api/balances', 'ApiController@getBalances')->middleware('auth');
 Route::get('/api/balances/refresh', 'ApiController@refreshBalance');
 
+Route::get('/api/rock/orders/{instrument}', 'ApiController@getOrders')->middleware('auth');
 //Route::get('/my/{catchall?}', 'HomeController@my')->name("my")->where('catchall', '(.*)');
 
 

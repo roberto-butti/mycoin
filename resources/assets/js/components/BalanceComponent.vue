@@ -82,8 +82,8 @@
                     {{ item['symbol'] }}
                     </td>
                     <td>
-                        {{ item['value'] }}
-                        {{ item['quantity'] }}
+                        {{ item['value'] }}<br />
+                        {{ item['quantity'] }}<br />
                         {{ item['volume'] }}
                     </td>
                     <td>
