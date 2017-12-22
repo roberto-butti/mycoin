@@ -2,16 +2,17 @@
 <div class="container">
     <div class="columns is- is-marginless">
         <div class="column is-4">
-            <table class="table is-bordered is-striped is-narrow is-fullwidth">
+            <table class="table  is-striped is-narrow is-fullwidth">
             <thead>
             <tr>
-                <th colspan="2">Your Balance</th>
+                <th >Your Balance</th>
+                <th><button @click.prevent="refreshBalance()" class="button is-small" v-bind:class="{ 'is-loading': loading }">Refresh</button></th>
             </tr>
             </thead>
             <tfoot>
             <tr>
-                <th>{{ total }}</th>
-                <th><button @click.prevent="refreshBalance()" class="button is-small is-success" v-bind:class="{ 'is-loading': loading }">Refresh</button></th>
+                <th colspan="2" class="cellnumber">{{ total }}</th>
+                
             </tr>
             </tfoot>
             <tbody>
@@ -34,7 +35,7 @@
 
         </div>
         <div class="column is-4">
-            <table class="table is-bordered is-striped is-narrow is-fullwidth">
+            <table class="table  is-striped is-narrow is-fullwidth">
             <thead>
             <tr>
                 <th colspan="2">
@@ -64,16 +65,48 @@
         
         </div>
         <div class="column is-4">
-            {{ newtrade }}
-            <p v-for="(item, index) in this.newtrade">
-                {{ item['symbol'] }}
-                {{ item['value'] }}
-            </p>
+            <table class="table  is-striped is-narrow is-fullwidth">
+            <thead>
+            <tr>
+                <th colspan="5">
+                    Realtime Trade
+                </th>
+                <th>
+                    
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr class="is-small" v-for="(item, index) in this.newtrade">
+                    <td>
+                    {{ item['symbol'] }}
+                    </td>
+                    <td>
+                        {{ item['value'] }}
+                        {{ item['quantity'] }}
+                        {{ item['volume'] }}
+                    </td>
+                    <td>
+                        {{ item['diff'] }}
+                    </td>
+                    <td>
+                        {{ item['side'] }}
+                    </td>
+                    <td>
+                        <small>{{ item['time'] }}</small>
+                    </td>
+                    <!-- {{ item['dark'] }} -->
+                    
+                </tr>
+            </tbody>
+            </table>
+            
         </div>
         
        
 
     </div>
+
     <div class="columns">
         <div class="column is-12">
             <div class="tabs">
@@ -189,9 +222,11 @@ import Pusher from 'pusher-js' // import Pusher
                 pusher.bind('last_trade', data => {
                     //console.log(data);
                     console.log(this.newtrade);
-                    this.newtrade.unshift(data /*{ "symbol": data["symbol"], "value": data["value"]}*/);
-                    if (this.newtrade.length >10) {
-                        this.newtrade.pop();
+                    if (this.instruments.indexOf(data["symbol"]) >=0 ){
+                        this.newtrade.unshift(data /*{ "symbol": data["symbol"], "value": data["value"]}*/);
+                        if (this.newtrade.length >5) {
+                            this.newtrade.pop();
+                        }
                     }
                 });
 
@@ -208,7 +243,12 @@ import Pusher from 'pusher-js' // import Pusher
 </script>
 
 <style>
+th, td {
+    font-size: 80%;
+}
+
 td.numbercell {
     text-align: right;
+    font-size: 80%;
 }
 </style>
