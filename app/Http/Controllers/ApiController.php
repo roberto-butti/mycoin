@@ -147,6 +147,40 @@ class ApiController extends Controller
         return $result;
     }
 
+    public function createOrder(Request $request, $instrument) {
+        $id = $request->input('id');
+        $amount = $request->input('amount');
+        $price = $request->input('price');
+        $fund_id = $request->input('fund_id');
+        $side = $request->input('side');
+
+
+        $params=array(
+            "fund_id"=>$fund_id,
+            "side"=>$side,
+            "amount"=>$amount,
+            "price"=>$price
+        );
+        $result = \App\RockApi::order_create($fund_id, $params);
+
+
+        
+        return $result;
+    }
+
+    public function deleteOrder(Request $request, $instrument) {
+        $id = $request->input('id');
+        $fund_id = $request->input('fund_id');
+        $result = ["id" => $id, "fund_id" => $fund_id];
+
+
+        
+        $result = \App\RockApi::order_delete($fund_id, $id);
+        
+        return $result;
+    }
+
+
     public function getTicker($instrument) {
 
         $result = \App\RockApi::ticker($instrument);
