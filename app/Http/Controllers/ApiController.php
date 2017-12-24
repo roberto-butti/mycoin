@@ -172,11 +172,12 @@ class ApiController extends Controller
         $id = $request->input('id');
         $fund_id = $request->input('fund_id');
         $result = ["id" => $id, "fund_id" => $fund_id];
-
-
-        
         $result = \App\RockApi::order_delete($fund_id, $id);
-        
+        return $result;
+    }
+
+    public function getUserTrades($instrument) {
+        $result = \App\RockApi::userTrades($instrument);
         return $result;
     }
 

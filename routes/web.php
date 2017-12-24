@@ -26,6 +26,9 @@ Route::get('/api/balances/refresh', 'ApiController@refreshBalance');
 Route::get('/api/rock/orders/{instrument}', 'ApiController@getOrders')->middleware('auth');
 Route::delete('/api/rock/order/{instrument}', 'ApiController@deleteOrder')->middleware('auth');
 Route::put('/api/rock/order/{instrument}', 'ApiController@createOrder')->middleware('auth');
+Route::get('/api/rock/trades/{instrument}', 'ApiController@getUserTrades')->middleware('auth');
+
+
 //Route::get('/my/{catchall?}', 'HomeController@my')->name("my")->where('catchall', '(.*)');
 
 

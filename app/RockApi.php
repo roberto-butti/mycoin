@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Log;
 class RockApi {
 
     private static function callPrivateApi($url, $custom_method="GET", $params = []) {
-
         if ($custom_method == "DELETE" || $custom_method == "POST") {
             $apiKey = env("ROCKET_TRADE_APIKEY");
             $apiSecret=env("ROCKET_TRADE_SECRET");
@@ -17,21 +16,14 @@ class RockApi {
             $apiKey=env("ROCKET_APIKEY");
             $apiSecret=env("ROCKET_SECRET");
         }
-        
-        
-        
-        
-
         $nonce=microtime(true)*10000;
         $signature=hash_hmac("sha512",$nonce.$url,$apiSecret);
-        
         $headers=array(
           "Content-Type: application/json",
           "X-TRT-KEY: ".$apiKey,
           "X-TRT-SIGN: ".$signature,
           "X-TRT-NONCE: ".$nonce
         );
-        
         $ch=curl_init();
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_CUSTOMREQUEST,$custom_method);
@@ -114,6 +106,13 @@ class RockApi {
         $result = self::callApi($url);
 
         return $result;
+    }
+
+    public static function userTrades($instrument) {
+        $url="https://api.therocktrading.com/v1/funds/".$instrument."/trades";
+        $result = self::callPrivateApi($url);
+        return $result;
+        
     }
 
 
