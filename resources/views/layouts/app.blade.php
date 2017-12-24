@@ -15,10 +15,10 @@
         <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     </head>
     <body>
-    @include('block.menu')
-    {{-- @include('block.hero') --}}
+    
     
         <div id="app">
+            @include('block.menu')
             @yield('content')
         </div>
         @include('block.footer')

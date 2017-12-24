@@ -26,6 +26,11 @@ Vue.component('realtime', require('./components/RealtimeComponent.vue'));
 
 const app = new Vue({
     el: '#app',
+    data () {
+        return {
+            showNav: false,
+        }
+    },
     methods: {
 
         
