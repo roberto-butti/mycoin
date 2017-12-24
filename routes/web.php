@@ -18,6 +18,7 @@ Route::get('/', function () {
 */
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/my', 'HomeController@dashboard')->name('dashboard')->middleware('auth');
+Route::get('/my/trades/{instrument?}', 'HomeController@trades')->name('trades')->middleware('auth');
 
 
 Route::get('/api/balances', 'ApiController@getBalances')->middleware('auth');

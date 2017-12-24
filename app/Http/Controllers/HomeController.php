@@ -40,6 +40,10 @@ class HomeController extends Controller
 
     }
 
+    public function trades($instrument="BTCEUR") {
+        return view('trades', ['instrument' => $instrument]);
+    }
+
     public function getTickers() {
         $client = new \GuzzleHttp\Client();
         $url = "https://api.therocktrading.com/v1/funds/tickers";
