@@ -22,6 +22,7 @@ Vue.component('balance', require('./components/BalanceComponent.vue'));
 Vue.component('currencydetail', require('./components/CurrencyDetailComponent.vue'));
 Vue.component('instrumentdetail', require('./components/InstrumentDetailComponent.vue'));
 Vue.component('realtime', require('./components/RealtimeComponent.vue'));
+Vue.component('usertrades', require('./components/UserTradesComponent.vue'));
 
 
 const app = new Vue({

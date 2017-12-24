@@ -17,6 +17,7 @@ Route::get('/', function () {
 });
 */
 Route::get('/', 'HomeController@index')->name('home');
+Route::get('/oldhome', 'HomeController@indexold')->name('oldindex');
 Route::get('/my', 'HomeController@dashboard')->name('dashboard')->middleware('auth');
 Route::get('/my/trades/{instrument?}', 'HomeController@trades')->name('trades')->middleware('auth');
 

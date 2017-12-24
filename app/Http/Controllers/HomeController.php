@@ -21,8 +21,9 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function oldindex()
     {
+
         $currency = 'BTCEUR';
         $tickers = \App\Ticker::where('fund_id', $currency)
         ->select('date', 'last', 'fund_id')
@@ -32,6 +33,12 @@ class HomeController extends Controller
         ->get();
         $ticker = $tickers[0];
         return view('home',['tickers' => $tickers, 'lastticker' => $ticker, 'currency' => $currency]);
+    }
+
+    public function index() {
+        $currency = "BTC";
+        return view('index',[ 'currency' => $currency]);
+
     }
 
     public function dashboard() {

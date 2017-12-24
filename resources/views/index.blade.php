@@ -2,8 +2,7 @@
 
 @section('content')
 <div class="container is-fluid">
-<usertrades instrument="{{ $instrument }}"></usertrades>
-{{ $instrument }}
+index
     
 </div>
 @endsection
