@@ -8,10 +8,12 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }} {{ app()->version() }}</title>
+        <title>{{ config('app.name', 'MyCoin') }} {{ app()->version() }}</title>
         <!--script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script-->
 
         <!-- Styles -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    
         <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     </head>
     <body>
