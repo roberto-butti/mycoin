@@ -1,26 +1,36 @@
 <template>
 <div class="container">
     <div class="columns">
-        <div class="column is-8">
+        <div class="column is-7">
             <table class="table  is-striped is-narrow is-fullwidth">
             <thead>
             <tr>
-                <th colspan="9">
-                    Lista ordini per {{ this.instrument }}
+                <th colspan="6">
+                    Order List <b>{{ this.instrument }}</b>
                 </th>
                 <th>
-                    <button @click.prevent="loadMyOrders(selected_instrument)" class="button is-small" >refresh</button>
+                    <a @click.prevent="loadMyOrders(selected_instrument)" class="button is-small" >
+                        <span class="icon">
+                            <i class="fa fa-refresh"></i>
+                        </span>
+                    </a>
                 </th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="(item, index) in myorders['orders']">
-                <td><button @click.prevent="deleteOrder(item.id, item.fund_id)" class="button is-small" >DELETE</button></td>
-                <td>{{ item['id'] }}</td>
-                <td>{{ item.fund_id }}</td>
-                <td>{{ item['side'] }}</td>
-                <td>{{ item['type'] }}</td>
-                <td>{{ item['status'] }}</td>
+                <td>
+                    <a @click.prevent="deleteOrder(item.id, item.fund_id)" class="button is-small" >
+                        <span class="icon">
+                            <i class="fa fa-trash"></i>
+                        </span>
+                    </a>
+                </td>
+                
+                <td :class="item['side']">{{ item.fund_id }} {{ item['side'] }}<br>{{ item['id'] }}</td>
+                
+                <td>{{ item['type'] }}<br>{{ item['status'] }}</td>
+                
                 <td>{{ item['price'] }}</td>
                 <td>{{ item['amount'] }}</td>
                 <td>{{ item['amount_unfilled'] }}</td>
@@ -30,6 +40,7 @@
             </tbody>
             </table>
             <div class="control">
+                {{ spread }} %
                 <label class="radio">
                 <input type="radio" name="action" value="buy"  v-model="order_action">
                 BUY
@@ -53,11 +64,13 @@
             <thead>
             <tr>
                 <th colspan="2">
-                    {{ operation }} per {{ this.instrument }}
+                    {{ selected_instrument }} {{ operation }}
+                    
                 </th>
             </tr>
             </thead>
             <tbody>
+                
             <tr v-for="(item, index) in orderbook[operation]">
                 <td>{{ item.price }}</td>
                 <td>{{ item.amount }}</td>
@@ -91,7 +104,9 @@ import Pusher from 'pusher-js' // import Pusher
 
                 order_price:0,
                 order_amount:0,
-                order_action:"BUY"
+                order_action:"BUY",
+
+                spread: "0"
 
             }
         },
@@ -103,6 +118,7 @@ import Pusher from 'pusher-js' // import Pusher
             }
         },
         computed: {
+            
             total_order: function () {
                 var amount = parseFloat(this.order_amount);
                 var price = parseFloat(this.order_price);
@@ -167,6 +183,16 @@ import Pusher from 'pusher-js' // import Pusher
                 })
                 
             },
+            calculate_spread: function () {
+                //console.log("Computed Spread: ");
+                //console.log(this.orderbook.asks);
+                
+                if (this.orderbook.asks != undefined) {
+                    this.spread =  (Math.abs(1 - (this.orderbook.asks[0].price / this.orderbook.bids[0].price))*100).toFixed(3);
+
+                }
+                
+            },
             subscribe (instrument) {
                 this.newtrade=[];
                 var wantBind=false;
@@ -185,6 +211,7 @@ import Pusher from 'pusher-js' // import Pusher
                 if (wantBind) {
                     this.pusher.bind('orderbook', data => {
                         this.orderbook = data;
+                        this.calculate_spread();
                     });
 
                 }
@@ -205,3 +232,15 @@ import Pusher from 'pusher-js' // import Pusher
         }
     }
 </script>
+
+<style>
+
+td.buy {
+    background-color: lightgreen;   
+}
+td.sell {
+    background-color: lightpink;   
+}
+
+</style>
+
