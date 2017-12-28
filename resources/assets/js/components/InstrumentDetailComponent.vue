@@ -5,15 +5,27 @@
             <table class="table  is-striped is-narrow is-fullwidth">
             <thead>
             <tr>
-                <th colspan="6">
-                    Order List <b>{{ this.instrument }}</b>
-                </th>
                 <th>
                     <a @click.prevent="loadMyOrders(selected_instrument)" class="button is-small" >
                         <span class="icon">
-                            <i class="fa fa-refresh"></i>
+                            <i class="fa fa-sync"></i>
                         </span>
                     </a>
+                </th>
+                <th colspan="2">
+                    Orders <b>{{ this.instrument }}</b>
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>
+                    Amount
+                </th>
+                <th>
+                    Avail
+                </th>
+                <th>
+                    Date
                 </th>
             </tr>
             </thead>
@@ -23,6 +35,11 @@
                     <a @click.prevent="deleteOrder(item.id, item.fund_id)" class="button is-small" >
                         <span class="icon">
                             <i class="fa fa-trash"></i>
+                        </span>
+                    </a>
+                    <a @click.prevent="replaceOrder(index, item.id, item.fund_id)" class="button is-small" >
+                        <span class="icon">
+                            <i class="fa fa-fire"></i>
                         </span>
                     </a>
                 </td>
@@ -141,7 +158,21 @@ import Pusher from 'pusher-js' // import Pusher
                     console.log(error);
                 });
             },
-            
+            replaceOrder(index,id, fund_id) {
+                var current_order= this.myorders['orders'][index];
+                console.log("Replace order"+id+"on instrument: "+fund_id+" position"+index);
+                console.log(current_order.id);
+                console.log(current_order.side);
+                var current_bid = this.orderbook.bids[0].price;
+                var current_ask = this.orderbook.asks[0].price
+                if (current_order.side =="buy") {
+
+                    this.order_price = current_bid+0.01;    
+                    this.order_amount = current_order.amount;
+                }
+                //console.log(this.orderbook.bids[0].price);
+            },
+
             submitOrder() {
                 var amount = parseFloat(this.order_amount);
                 var price = parseFloat(this.order_price);

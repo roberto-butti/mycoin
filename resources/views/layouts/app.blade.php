@@ -12,8 +12,8 @@
         <!--script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script-->
 
         <!-- Styles -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    
+        <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"-->
+        <script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
         <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     </head>
     <body>
