@@ -12,10 +12,10 @@ let mix = require('laravel-mix');
  */
 
 mix.js('resources/assets/js/app.js', 'public/js')
-.version()
-.sass('resources/assets/sass/app.scss', 'public/css').version();
+    .version()
+    .sass('resources/assets/sass/app.scss', 'public/css').version();
 
 mix.sourceMaps();
 mix.browserSync({
-    proxy: 'mycoin.dev'
+    proxy: 'mycoin.test'
 });

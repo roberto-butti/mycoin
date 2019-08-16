@@ -15,27 +15,27 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
-Vue.component('formcalc', require('./components/FormCalcComponent.vue'));
-Vue.component('lasttickerlist', require('./components/LastTickerList.vue'));
-Vue.component('balance', require('./components/BalanceComponent.vue'));
-Vue.component('currencydetail', require('./components/CurrencyDetailComponent.vue'));
-Vue.component('instrumentdetail', require('./components/InstrumentDetailComponent.vue'));
-Vue.component('realtime', require('./components/RealtimeComponent.vue'));
-Vue.component('usertrades', require('./components/UserTradesComponent.vue'));
+Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('formcalc', require('./components/FormCalcComponent.vue').default);
+Vue.component('lasttickerlist', require('./components/LastTickerList.vue').default);
+Vue.component('balance', require('./components/BalanceComponent.vue').default);
+Vue.component('currencydetail', require('./components/CurrencyDetailComponent.vue').default);
+Vue.component('instrumentdetail', require('./components/InstrumentDetailComponent.vue').default);
+Vue.component('realtime', require('./components/RealtimeComponent.vue').default);
+Vue.component('usertrades', require('./components/UserTradesComponent.vue').default);
 
 
 const app = new Vue({
     el: '#app',
-    data () {
+    data() {
         return {
             showNav: false,
         }
     },
     methods: {
 
-        
 
-        
+
+
     }
 });

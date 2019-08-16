@@ -68,7 +68,7 @@ class ApiController extends Controller
                 $row[$prefix."_value"] = $balance * $moltiplicator;
                 $row[$prefix."_operation"] = "*";
             } else {
-                $row[$prefix."_value"] = $moltiplicator / $balance;
+                $row[$prefix."_value"] = $balance / $moltiplicator;
                 $row[$prefix."_operation"] = "/";
             }
             

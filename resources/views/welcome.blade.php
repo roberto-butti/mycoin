@@ -97,11 +97,10 @@
                 </div>
             @endif
 
-            <div class="content"  id="app">
+            <div class="content">
                 <div class="title m-b-md">
                     Laravel
                     <p class="versioninfo">Version {{ app()->version() }}</p>
-                    aa<example-component></example-component>aa
                 </div>
 
                 <div class="links">
@@ -113,8 +112,8 @@
                 </div>
 
                 <div class="foundation_button_test">
-                    <p class="framwork_title">Bulma 0.6.1</p>
-                    <p class="framwork_title">Bulma Extension 0.5.2</p>
+                    <p class="framwork_title">Bulma v0.7.4</p>
+                    <p class="framwork_title">Bulma Extension v4.0.2</p>
 
                     <div class="block">
                         <a class="button is-primary">Primary</a>
@@ -126,6 +125,5 @@
                 </div>
             </div>
         </div>
-        <script src="{{ asset('js/app.js') }}"></script>
     </body>
 </html>
