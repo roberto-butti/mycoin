@@ -21,6 +21,9 @@
     <a class="navbar-item" href="{{ route('trades') }}">
       Trades
     </a>
+        <a class="navbar-item" href="{{ route('viewinstrumentmany', ["instrument" => "LTCEUR", "many" => "10"]) }}">
+      View Instrument
+    </a>
   </div>
   <div class="navbar-end">
     @if (Auth::guest())

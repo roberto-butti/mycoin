@@ -14,6 +14,7 @@ node_modules
 *.DS_Store
 .AppleDouble
 .LSOverride
+tickers.sql
 
 # Icon must end with two 
 Icon

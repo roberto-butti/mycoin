@@ -4,7 +4,7 @@ SSH_ALIAS=mycoin.stage
 SSH_USER=mycoin
 WEB_DIR=/var/www/mycoin.odotalk.com/htdocs
 WEB_USER=www-data
-#DRY_RUN=--dry-run
+# DRY_RUN=--dry-run
 DRY_RUN=
 
 

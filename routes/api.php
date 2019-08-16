@@ -23,7 +23,6 @@ Route::get('/tickers/analyze', 'ApiController@analyzeTickers');
 Route::get('/balances3/{currency?}', 'ApiController@getBalances3');
 Route::get('/rock/tickers', 'ApiController@getTickers');
 Route::get('/rock/ticker/{instrument}', 'ApiController@getTicker');
+//Route::get('/rock/instrument/{instrument?}', 'ApiController@getViewInstrument');
 
 Route::get('/rock/orderbook/{instrument}/{limit?}', 'ApiController@getOrderbook');
-
-

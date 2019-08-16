@@ -23,6 +23,7 @@ Vue.component('currencydetail', require('./components/CurrencyDetailComponent.vu
 Vue.component('instrumentdetail', require('./components/InstrumentDetailComponent.vue').default);
 Vue.component('realtime', require('./components/RealtimeComponent.vue').default);
 Vue.component('usertrades', require('./components/UserTradesComponent.vue').default);
+Vue.component('viewinstrument', require('./components/ViewInstrumentComponent.vue').default);
 
 
 const app = new Vue({

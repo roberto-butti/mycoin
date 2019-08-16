@@ -21,9 +21,15 @@ Route::get('/oldhome', 'HomeController@indexold')->name('oldindex');
 Route::get('/my', 'HomeController@dashboard')->name('dashboard')->middleware('auth');
 Route::get('/my/trades/{instrument?}', 'HomeController@trades')->name('trades')->middleware('auth');
 
+Route::get('/my/view/{instrument}/{many?}', 'HomeController@view')->name('viewinstrumentmany')->middleware('auth');
+Route::get('/my/view/{instrument?}', 'HomeController@view')->name('viewinstrument')->middleware('auth');
+
+
+
 
 Route::get('/api/balances', 'ApiController@getBalances')->middleware('auth');
 Route::get('/api/balances/refresh', 'ApiController@refreshBalance');
+Route::get('/api/rock/instrument/{instrument}/{many}', 'ApiController@getViewInstrument');
 
 Route::get('/api/rock/orders/{instrument}', 'ApiController@getOrders')->middleware('auth');
 Route::delete('/api/rock/order/{instrument}', 'ApiController@deleteOrder')->middleware('auth');
@@ -40,4 +46,3 @@ Auth::routes();
 
 Route::get('/tickers', 'HomeController@getTickers')->name('tickers');
 Route::get('/funds', 'HomeController@getFunds')->name('funds');
-
